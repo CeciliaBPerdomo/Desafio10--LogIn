@@ -27,7 +27,7 @@ app.use(session({
     secret: 'sh',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 40000 }
+    cookie: { maxAge: 100000 }
 }))
 
 let messages = []
@@ -45,9 +45,9 @@ app.get('/', (req, res) => {
     ]
     try{
         if(req.session.usuario) {
-            res.render('productos', { productos })
+            res.render('productos', { productos, session })
         } else {
-            res.sendFile(__dirname + 'login')
+            res.sendFile(__dirname + '/public/registrarse.html')
         }
     } catch (error){ console.log(error) }
     
@@ -77,14 +77,12 @@ io.on('connection', function(socket){
 
 
 /* Login */
-app.get('/login', (req, res) => {
-    let usuario = req.body.username
+app.post('/login', (req, res) => {
+    let usuario = req.body.usuario
     req.session.usuario = usuario
     console.log(usuario)
     res.redirect('/')
 })
-
-app.get('/getUserName', (req, res) => req.session.usuario)
 
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {

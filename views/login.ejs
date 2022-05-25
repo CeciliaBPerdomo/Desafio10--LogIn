@@ -1,6 +1,7 @@
 <div id = "bienvenido">
-    <% for (const sesion of session) {%>
-        <h1 style="color:blue;">Bienvenido: <%=sesion.usuario%></h1>
+    <% if(session.length > 0){ %>
+        <h1 style="color:blue;">Bienvenida: <%=session.usuario%></h1>
+        <button class="btn btn-success mt-3 mb-5">Log out</button>
+        <br>
     <%};%>
-    <br>
 </div>
