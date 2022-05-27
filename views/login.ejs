@@ -1,7 +1,9 @@
 <div id = "bienvenido">
-    <% if(session.length > 0){ %>
-        <h1 style="color:blue;">Bienvenida: <%=session.usuario%></h1>
+    <% if(usuario.length){ %>
+        <h1 style="color:blue;">Bienvenida: <%=usuario%></h1>
+        <form action="/logout" method="post">
         <button class="btn btn-success mt-3 mb-5">Log out</button>
+    </form>
         <br>
     <%};%>
 </div>

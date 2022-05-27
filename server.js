@@ -30,6 +30,8 @@ app.use(session({
     cookie: { maxAge: 100000 }
 }))
 
+app.use(require('flash')())
+
 let messages = []
 const productos = []
 
@@ -43,9 +45,10 @@ app.get('/', (req, res) => {
         {nombre: 'Regla', precio: 10, foto: "https://image.shutterstock.com/image-vector/school-measuring-plastic-ruler-20-260nw-615662024.jpg"}, 
         {nombre: 'Compás', precio: 20, foto: "https://thumbs.dreamstime.com/b/comp%C3%A1s-de-dibujo-aislado-rojo-132996590.jpg"}
     ]
+    const usuario = req.session.usuario
     try{
         if(req.session.usuario) {
-            res.render('productos', { productos, session })
+            res.render('productos', { productos, usuario})
         } else {
             res.sendFile(__dirname + '/public/registrarse.html')
         }
@@ -86,7 +89,9 @@ app.post('/login', (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
-        if(!err) res.send('Logout ok!')
+        if(!err) {
+            res.send('Chau: ', req.session.usuario)
+        }
         else res.send({ status: 'Logout ERROR', body: err })
     })
 })
@@ -94,6 +99,6 @@ app.get('/logout', (req, res) => {
 const PORT = process.env.PORT || 8080
 
 const srv = server.listen(PORT, () => {
-    console.log(`Servidor Http con WebSockets escuchando en el puerto ${srv.address().port}`)
+    console.log(`Servidor escuchando en el puerto ${srv.address().port}`)
 })
 srv.on('error', error => console.log(`Error en el servidor ${error}`))
